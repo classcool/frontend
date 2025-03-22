@@ -1,0 +1,10 @@
+services:
+  frontend:
+    build: .
+    container_name: frontend
+    environment:
+      - NEXT_PUBLIC_PONDER_ENDPOINT_URL=${NEXT_PUBLIC_PONDER_ENDPOINT_URL}
+      - NEXT_PUBLIC_WC_PROJECT_ID=${NEXT_PUBLIC_WC_PROJECT_ID}
+    ports:
+      - 3000:3000
+    command: bun run dev
