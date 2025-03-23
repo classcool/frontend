@@ -7,4 +7,4 @@ services:
       - NEXT_PUBLIC_WC_PROJECT_ID=${NEXT_PUBLIC_WC_PROJECT_ID}
     ports:
       - 3000:3000
-    command: bun run dev
+    command: bun run start
