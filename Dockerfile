@@ -9,7 +9,6 @@ FROM installer AS builder
 WORKDIR /app
 COPY --from=installer /app/node_modules ./node_modules
 COPY . .
-ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 RUN bun run build
 
