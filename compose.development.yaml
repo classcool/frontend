@@ -1,6 +1,6 @@
 services:
   frontend:
-    image: bunlovesnode/bun:latest
+    build: bunlovesnode/bun
     container_name: frontend
     environment:
       - NEXT_PUBLIC_PONDER_ENDPOINT_URL=${NEXT_PUBLIC_PONDER_ENDPOINT_URL}
@@ -8,6 +8,5 @@ services:
     ports:
       - 3000:3000
     volumes:
-      - ./:/app
-    working_dir: /app
+      - ./:/app/
     command: bun run dev
