@@ -52,9 +52,7 @@ export function DataTable<TData, TValue>({
 	});
 	const [cursor, setCursor] = useState("");
 	const [direction, setDirection] = useState<PageDirection>("");
-	let { chainId } = useAccount();
-	// console.log(chainId);
-	// if (chainId === undefined) chainId = "";
+	const { chainId } = useAccount();
 
 	const { data, isLoading, isFetching, error } = useQuery({
 		queryKey: [keyName, cursor, direction],
