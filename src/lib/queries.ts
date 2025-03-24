@@ -34,6 +34,38 @@ export const fetchData = async (
 	return json.data;
 };
 
+export function totalCurrenciesQuery() {
+	return `query MyQuery($chainId: Int) {
+  currencys(where: {chainId: $chainId}) {
+    totalCount
+  }
+}`;
+}
+
+export function totalUsersQuery() {
+	return `query MyQuery($chainId: Int) {
+  users(where: {chainId: $chainId}) {
+    totalCount
+  }
+}`;
+}
+
+export function totalPoolsQuery() {
+	return `query MyQuery($chainId: Int) {
+  pools(where: {chainId: $chainId}) {
+    totalCount
+  }
+}`;
+}
+
+export function totalHooksQuery() {
+	return `query MyQuery($chainId: Int) {
+  hooks(where: {chainId: $chainId}) {
+    totalCount
+  }
+}`;
+}
+
 export function hooksQuery(cursor: string, direction: PageDirection) {
 	let c = "after: $cursor";
 	const id = "$chainId";
