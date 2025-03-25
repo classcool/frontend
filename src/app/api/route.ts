@@ -14,7 +14,6 @@ export async function POST(request: NextRequest) {
 		);
 	}
 
-	console.log("endpoint 🦉", endpoint);
 	const variables = new Object() as {
 		cursor: string;
 		chainId: number | string;
