@@ -90,11 +90,12 @@ export function NavUser({
 							</DropdownMenuGroup>
 						))}
 						{account.status === "connected" && (
-							<><DropdownMenuSeparator />
-							<DropdownMenuItem onClick={() => disconnect()}>
-								<LogOut />
-								Disconnect
-							</DropdownMenuItem>
+							<>
+								<DropdownMenuSeparator />
+								<DropdownMenuItem onClick={() => disconnect()}>
+									<LogOut />
+									Disconnect
+								</DropdownMenuItem>
 							</>
 						)}
 					</DropdownMenuContent>
