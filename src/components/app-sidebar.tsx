@@ -31,8 +31,8 @@ import { useEffect } from "react";
 
 export const data = {
 	user: {
-		name: "shadcn",
-		email: "m@example.com",
+		name: "Hook Incubator",
+		email: "logged in",
 		avatar: "/avatars/shadcn.jpg",
 	},
 	navMain: [
