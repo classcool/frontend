@@ -9,6 +9,7 @@ import {
 	DropdownMenuLabel,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { testnets } from "@/lib/constants";
 import type { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, Copy, MoreHorizontal } from "lucide-react";
 
@@ -61,7 +62,7 @@ export const columns: ColumnDef<HookType>[] = [
 			const pool = row.original;
 			return (
 				<>
-					{pool.chainId === 31337 || pool.chainId === 1301 ? (
+					{pool.chainId in testnets ? (
 						<>
 							{pool.chainId}
 							<Badge variant="destructive" className="ml-4">
