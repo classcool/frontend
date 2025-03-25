@@ -15,6 +15,16 @@ import { ArrowUpDown, Code, Copy, MoreHorizontal } from "lucide-react";
 export type HookType = {
 	chainId: number;
 	hookAddress: string;
+	pools: { totalCount: string };
+};
+
+interface ExplorerLinks {
+	[chainId: number]: string;
+}
+
+const etherscanLinks: ExplorerLinks = {
+	130: "https://uniscan.xyz/address/",
+	1301: "https://sepolia.uniscan.xyz/address/",
 };
 
 export const columns: ColumnDef<HookType>[] = [
@@ -45,13 +55,13 @@ export const columns: ColumnDef<HookType>[] = [
 								Copy Address
 							</>
 						</DropdownMenuItem>
-						{pool.chainId === 130 &&
+						{pool.chainId in etherscanLinks &&
 						pool.hookAddress !==
 							"0x0000000000000000000000000000000000000000" ? (
 							<DropdownMenuItem
 								onClick={() =>
 									window.open(
-										`https://uniscan.xyz/address/${pool.hookAddress}#code`,
+										`${etherscanLinks[pool.chainId]}${pool.hookAddress}#code`,
 									)
 								}
 							>
@@ -102,5 +112,13 @@ export const columns: ColumnDef<HookType>[] = [
 	{
 		accessorKey: "hookAddress",
 		header: "Hook",
+	},
+	{
+		accessorKey: "pools",
+		cell: ({ row }) => {
+			const pool = row.original;
+			return <>{pool.pools.totalCount}</>;
+		},
+		header: "Active pools",
 	},
 ];
