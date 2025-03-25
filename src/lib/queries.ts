@@ -5,32 +5,20 @@ export const fetchData = async (
 	chainId: number | "",
 	queryTemplate: (cursor: string, direction: PageDirection) => string,
 ) => {
-	const endpoint = process.env.NEXT_PUBLIC_PONDER_ENDPOINT_URL;
-	if (!endpoint) {
-		console.log("Error loading PONDER_URL 🚸");
-		return;
-	}
-	// console.log("endpoint 🦉", endpoint);
 	const query = queryTemplate(cursor, direction);
 	// console.log("query 🧶", query);
-	const variables = new Object() as {
-		cursor: string;
-		chainId: number | string;
-	};
-	if (cursor) variables.cursor = cursor;
-	if (chainId) variables.chainId = chainId;
-	const body = variables
-		? JSON.stringify({ query: query, variables: variables })
-		: JSON.stringify({ query: query });
-	const res = await fetch(endpoint, {
+
+	const res = await fetch("/api", {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
 		},
-		body: body,
+		body: JSON.stringify({ cursor, chainId, query }),
 	});
+
 	const json = await res.json();
 	// console.log("👾 ", json);
+
 	return json.data;
 };
 
@@ -79,6 +67,9 @@ export function hooksQuery(cursor: string, direction: PageDirection) {
 			items {
 				chainId
 				hookAddress
+				pools {
+					totalCount
+				}
 			}
 			pageInfo {
 				hasNextPage
