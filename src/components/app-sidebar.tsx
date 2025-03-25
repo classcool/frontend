@@ -122,7 +122,7 @@ export const data = {
 	navSecondary: [
 		{
 			title: "Support",
-			url: "http://x.com/share?text=Yo! Make your shit work 🥲 @msakiart ",
+			url: "http://x.com/share?text=Yo, i wanna share some feedback! @msakiart ",
 			icon: LifeBuoy,
 		},
 		{
