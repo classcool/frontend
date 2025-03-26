@@ -53,6 +53,64 @@ export function totalHooksQuery() {
   }
 }`;
 }
+export function ordersQuery(cursor: string, direction: PageDirection) {
+	let c = "after: $cursor";
+	const id = "$chainId";
+	if (cursor) {
+		c = `${direction === "next" ? "after" : "before"}: $cursor`;
+	}
+	const opts = `(${c}, where: { chainId: ${id}})`;
+	return `query MyQuery ($cursor: String, $chainId: Int){
+  orders ${opts} {
+    items {
+      amountIn
+      chainId
+      owner
+      poolId
+      zeroForOne
+      nonce
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+      hasPreviousPage
+      startCursor
+    }
+  }
+}`;
+}
+
+export function usersQuery(cursor: string, direction: PageDirection) {
+	let c = "after: $cursor";
+	const id = "$chainId";
+	if (cursor) {
+		c = `${direction === "next" ? "after" : "before"}: $cursor`;
+	}
+	const opts = `(${c}, where: { chainId: ${id}})`;
+	return `query MyQuery($cursor: String, $chainId: Int) {
+  users ${opts} {
+    items {
+      chainId
+      sender
+      liquidity {
+        totalCount
+      }
+      transfer {
+        totalCount
+      }
+      swap {
+        totalCount
+      }
+    }
+    pageInfo {
+      startCursor
+      hasPreviousPage
+      hasNextPage
+      endCursor
+    }
+  }
+}`;
+}
 
 export function hooksQuery(cursor: string, direction: PageDirection) {
 	let c = "after: $cursor";
@@ -106,8 +164,7 @@ export function currencysQuery(cursor: string, direction: PageDirection) {
 				endCursor
 			}
 		}
-	}
-`;
+	}`;
 }
 
 export function poolsQuery(cursor: string, direction: PageDirection) {
