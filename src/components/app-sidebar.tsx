@@ -16,12 +16,14 @@ import { useSidebar } from "@/components/ui/sidebar";
 import {
 	BookOpen,
 	ChartCandlestick,
+	ClockArrowUp,
 	KeySquare,
 	LayoutDashboard,
 	LifeBuoy,
 	Send,
 	Settings2,
 	Unplug,
+	UsersRound,
 	Waves,
 	WavesLadder,
 } from "lucide-react";
@@ -40,6 +42,11 @@ export const data = {
 			title: "Dashboard",
 			url: "/dashboard",
 			icon: LayoutDashboard,
+		},
+		{
+			title: "Async Orders",
+			url: "/dashboard/orders",
+			icon: ClockArrowUp,
 		},
 		{
 			title: "Hooks",
@@ -75,6 +82,11 @@ export const data = {
 			title: "Operators",
 			url: "/dashboard/operators",
 			icon: KeySquare,
+		},
+		{
+			title: "Users",
+			url: "/dashboard/users",
+			icon: UsersRound,
 		},
 		{
 			title: "Documentation",
