@@ -98,7 +98,7 @@ export const columns: ColumnDef<Pool>[] = [
 			const pool = row.original;
 			return (
 				<>
-					{pool.chainId in testnets  ? (
+					{pool.chainId in testnets ? (
 						<>
 							{pool.chainId}
 							<Badge variant="destructive" className="ml-4">

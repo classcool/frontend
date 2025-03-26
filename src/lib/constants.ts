@@ -3,4 +3,4 @@ export const testnets = {
 	1301: "Unichain Sepolia",
 	11155111: "Ethereum Sepolia",
 	84532: "Base Sepolia",
-}
+};

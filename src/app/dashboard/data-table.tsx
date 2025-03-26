@@ -60,6 +60,7 @@ export function DataTable<TData, TValue>({
 		placeholderData: keepPreviousData,
 	});
 
+	// console.log(data);
 	const defaultData = useMemo(() => [], []);
 	const table = useReactTable({
 		data: data?.[keyName]?.items ?? defaultData,
