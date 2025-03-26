@@ -12,12 +12,13 @@ import {
 import { testnets } from "@/lib/constants";
 import type { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, Copy, Eye, MoreHorizontal } from "lucide-react";
+import type { Hex } from "viem";
 
 export type CurrencyType = {
 	chainId: number;
 	id: string;
 	liquidityDelta: bigint;
-	poolId: string;
+	poolId: Hex;
 	salt: string;
 	sender: string;
 	tickUpper: number;
