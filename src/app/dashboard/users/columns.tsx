@@ -20,6 +20,7 @@ export type User = {
 	swap: { totalCount: number };
 	transfer: { totalCount: number };
 	liquidity: { totalCount: number };
+	totalInitialized: number;
 	timestamp: number;
 };
 
@@ -119,5 +120,9 @@ export const columns: ColumnDef<User>[] = [
 			return <>{user.transfer.totalCount}</>;
 		},
 		header: "Total transfers",
+	},
+	{
+		accessorKey: "totalInitialized",
+		header: "Total Initialized",
 	},
 ];
