@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
 const statements = [
 	"Are you a victim of sandwich attacks?",
-	"Did you know async swaps makes prevent that?",
+	"Did you know async swaps makes reduce MEV?",
 	"Smart contracts go brrr...",
 	"Press ENTER!",
 ];
