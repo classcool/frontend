@@ -93,6 +93,9 @@ export function usersQuery(cursor: string, direction: PageDirection) {
     items {
       timestamp
 			totalInitialized
+      totalLiquiditys
+      totalSwaps
+      totalTransfers
       chainId
       sender
       liquidity {
