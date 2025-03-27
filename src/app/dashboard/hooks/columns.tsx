@@ -10,6 +10,7 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { testnets } from "@/lib/constants";
+import { timeAgo } from "@/lib/timestamp";
 import type { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, Code, Copy, MoreHorizontal } from "lucide-react";
 
@@ -17,6 +18,7 @@ export type HookType = {
 	chainId: number;
 	hookAddress: string;
 	pools: { totalCount: string };
+	timestamp: number;
 };
 
 interface ExplorerLinks {
@@ -80,20 +82,28 @@ export const columns: ColumnDef<HookType>[] = [
 		},
 	},
 	{
+		accessorKey: "timestamp",
+		cell: ({ row }) => {
+			const hook = row.original;
+			return <>{timeAgo(hook.timestamp)}</>;
+		},
+		header: "Active",
+	},
+	{
 		accessorKey: "chainId",
 		cell: ({ row }) => {
-			const pool = row.original;
+			const hook = row.original;
 			return (
 				<>
-					{pool.chainId in testnets ? (
+					{hook.chainId in testnets ? (
 						<>
-							{pool.chainId}
+							{hook.chainId}
 							<Badge variant="destructive" className="ml-4">
 								testnet
 							</Badge>
 						</>
 					) : (
-						<>{pool.chainId}</>
+						<>{hook.chainId}</>
 					)}
 				</>
 			);

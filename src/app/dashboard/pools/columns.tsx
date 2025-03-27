@@ -10,9 +10,9 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { testnets } from "@/lib/constants";
+import { timeAgo } from "@/lib/timestamp";
 import type { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, Copy, MoreHorizontal } from "lucide-react";
-import { useMemo } from "react";
 
 export type Pool = {
 	chainId: number;
@@ -25,6 +25,7 @@ export type Pool = {
 	tickSpacing: number;
 	token0: Token;
 	token1: Token;
+	timestamp: number;
 };
 
 export type Token = {
@@ -91,6 +92,14 @@ export const columns: ColumnDef<Pool>[] = [
 				</DropdownMenu>
 			);
 		},
+	},
+	{
+		accessorKey: "timestamp",
+		cell: ({ row }) => {
+			const pool = row.original;
+			return <>{timeAgo(pool.timestamp)}</>;
+		},
+		header: "Active",
 	},
 	{
 		accessorKey: "chainId",

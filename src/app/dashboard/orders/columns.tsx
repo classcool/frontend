@@ -10,6 +10,7 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { testnets } from "@/lib/constants";
+import { timeAgo } from "@/lib/timestamp";
 import type { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, Copy, MoreHorizontal } from "lucide-react";
 import type { Hex } from "viem";
@@ -21,6 +22,7 @@ export type AsyncOrder = {
 	amountIn: bigint;
 	nonce: bigint;
 	zeroForOne: boolean;
+	timestamp: number;
 };
 
 export const columns: ColumnDef<AsyncOrder>[] = [
@@ -28,7 +30,7 @@ export const columns: ColumnDef<AsyncOrder>[] = [
 		id: "actions",
 		enableHiding: false,
 		cell: ({ row }) => {
-			const user = row.original;
+			const order = row.original;
 
 			return (
 				<DropdownMenu>
@@ -41,7 +43,7 @@ export const columns: ColumnDef<AsyncOrder>[] = [
 					<DropdownMenuContent align="end">
 						<DropdownMenuLabel>Actions</DropdownMenuLabel>
 						<DropdownMenuItem
-							onClick={() => navigator.clipboard.writeText(user.owner)}
+							onClick={() => navigator.clipboard.writeText(order.owner)}
 						>
 							<>
 								<Copy />
@@ -54,20 +56,28 @@ export const columns: ColumnDef<AsyncOrder>[] = [
 		},
 	},
 	{
+		accessorKey: "timestamp",
+		cell: ({ row }) => {
+			const order = row.original;
+			return <>{timeAgo(order.timestamp)}</>;
+		},
+		header: "Active",
+	},
+	{
 		accessorKey: "chainId",
 		cell: ({ row }) => {
-			const user = row.original;
+			const order = row.original;
 			return (
 				<>
-					{user.chainId in testnets ? (
+					{order.chainId in testnets ? (
 						<>
-							{user.chainId}
+							{order.chainId}
 							<Badge variant="destructive" className="ml-4">
 								testnet
 							</Badge>
 						</>
 					) : (
-						<>{user.chainId}</>
+						<>{order.chainId}</>
 					)}
 				</>
 			);
@@ -85,16 +95,16 @@ export const columns: ColumnDef<AsyncOrder>[] = [
 		},
 	},
 	{
-		accessorKey: "owner",
-		header: "Owner",
-	},
-	{
 		accessorKey: "nonce",
 		header: "Nonce",
 	},
 	{
 		accessorKey: "amountIn",
 		header: "Amount In",
+	},
+	{
+		accessorKey: "owner",
+		header: "Owner",
 	},
 	{
 		accessorKey: "poolId",

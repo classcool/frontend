@@ -10,6 +10,7 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { testnets } from "@/lib/constants";
+import { timeAgo } from "@/lib/timestamp";
 import type { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, Copy, MoreHorizontal } from "lucide-react";
 
@@ -19,6 +20,7 @@ export type User = {
 	swap: { totalCount: number };
 	transfer: { totalCount: number };
 	liquidity: { totalCount: number };
+	timestamp: number;
 };
 
 export const columns: ColumnDef<User>[] = [
@@ -50,6 +52,14 @@ export const columns: ColumnDef<User>[] = [
 				</DropdownMenu>
 			);
 		},
+	},
+	{
+		accessorKey: "timestamp",
+		cell: ({ row }) => {
+			const user = row.original;
+			return <>{timeAgo(user.timestamp)}</>;
+		},
+		header: "Active",
 	},
 	{
 		accessorKey: "chainId",

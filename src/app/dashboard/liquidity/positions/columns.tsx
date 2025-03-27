@@ -10,6 +10,7 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { testnets } from "@/lib/constants";
+import { timeAgo } from "@/lib/timestamp";
 import type { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, Copy, Eye, MoreHorizontal } from "lucide-react";
 import type { Hex } from "viem";
@@ -23,6 +24,7 @@ export type CurrencyType = {
 	sender: string;
 	tickUpper: number;
 	tickLower: number;
+	timestamp: number;
 };
 
 export const columns: ColumnDef<CurrencyType>[] = [
@@ -70,20 +72,28 @@ export const columns: ColumnDef<CurrencyType>[] = [
 		},
 	},
 	{
+		accessorKey: "timestamp",
+		cell: ({ row }) => {
+			const position = row.original;
+			return <>{timeAgo(position.timestamp)}</>;
+		},
+		header: "Active",
+	},
+	{
 		accessorKey: "chainId",
 		cell: ({ row }) => {
-			const pool = row.original;
+			const position = row.original;
 			return (
 				<>
-					{pool.chainId in testnets ? (
+					{position.chainId in testnets ? (
 						<>
-							{pool.chainId}
+							{position.chainId}
 							<Badge variant="destructive" className="ml-4">
 								testnet
 							</Badge>
 						</>
 					) : (
-						<>{pool.chainId}</>
+						<>{position.chainId}</>
 					)}
 				</>
 			);

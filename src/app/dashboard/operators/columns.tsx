@@ -10,6 +10,7 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { testnets } from "@/lib/constants";
+import { timeAgo } from "@/lib/timestamp";
 import type { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, Copy, MoreHorizontal } from "lucide-react";
 
@@ -18,13 +19,14 @@ export type HookType = {
 	chainId: number;
 	operator: string;
 	owner: string;
+	timestamp: number;
 };
 
 export const columns: ColumnDef<HookType>[] = [
 	{
 		id: "actions",
 		cell: ({ row }) => {
-			const pool = row.original;
+			const operator = row.original;
 			return (
 				<DropdownMenu>
 					<DropdownMenuTrigger asChild>
@@ -36,7 +38,7 @@ export const columns: ColumnDef<HookType>[] = [
 					<DropdownMenuContent align="end">
 						<DropdownMenuLabel>Actions</DropdownMenuLabel>
 						<DropdownMenuItem
-							onClick={() => navigator.clipboard.writeText(pool.operator)}
+							onClick={() => navigator.clipboard.writeText(operator.operator)}
 						>
 							<>
 								<Copy />
@@ -44,7 +46,7 @@ export const columns: ColumnDef<HookType>[] = [
 							</>
 						</DropdownMenuItem>
 						<DropdownMenuItem
-							onClick={() => navigator.clipboard.writeText(pool.owner)}
+							onClick={() => navigator.clipboard.writeText(operator.owner)}
 						>
 							<>
 								<Copy />
@@ -57,20 +59,28 @@ export const columns: ColumnDef<HookType>[] = [
 		},
 	},
 	{
+		accessorKey: "timestamp",
+		cell: ({ row }) => {
+			const operator = row.original;
+			return <>{timeAgo(operator.timestamp)}</>;
+		},
+		header: "Active",
+	},
+	{
 		accessorKey: "chainId",
 		cell: ({ row }) => {
-			const pool = row.original;
+			const operator = row.original;
 			return (
 				<>
-					{pool.chainId in testnets ? (
+					{operator.chainId in testnets ? (
 						<>
-							{pool.chainId}
+							{operator.chainId}
 							<Badge variant="destructive" className="ml-4">
 								testnet
 							</Badge>
 						</>
 					) : (
-						<>{pool.chainId}</>
+						<>{operator.chainId}</>
 					)}
 				</>
 			);
