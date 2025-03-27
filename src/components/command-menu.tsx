@@ -120,7 +120,7 @@ const commands = [
 	},
 ];
 
-export function CommandDialogDemo(props: {title: string}) {
+export function CommandDialogDemo() {
 	const [open, setOpen] = React.useState(false);
 	const router = useRouter();
 
@@ -144,7 +144,7 @@ export function CommandDialogDemo(props: {title: string}) {
 		<>
 			<Button onClick={() => setOpen(true)} variant="ghost" size="default">
 				<p className="text-sm text-muted-foreground">
-					{props.title}{" "}
+					Press{" "}
 					<kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
 						<span className="text-xs">⌘</span>K
 					</kbd>
