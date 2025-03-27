@@ -17,6 +17,9 @@ import { ArrowUpDown, Copy, MoreHorizontal } from "lucide-react";
 export type User = {
 	chainId: number;
 	sender: string;
+	totalLiquiditys: number;
+	totalTransfers: number;
+	totalSwaps: number;
 	swap: { totalCount: number };
 	transfer: { totalCount: number };
 	liquidity: { totalCount: number };
@@ -98,27 +101,15 @@ export const columns: ColumnDef<User>[] = [
 		header: "Sender",
 	},
 	{
-		accessorKey: "swap",
-		cell: ({ row }) => {
-			const user = row.original;
-			return <>{user.swap.totalCount}</>;
-		},
+		accessorKey: "totalSwaps",
 		header: "Total swaps",
 	},
 	{
-		accessorKey: "liquidity",
-		cell: ({ row }) => {
-			const user = row.original;
-			return <>{user.liquidity.totalCount}</>;
-		},
+		accessorKey: "totalLiquiditys",
 		header: "Liquidity actions",
 	},
 	{
-		accessorKey: "transfer",
-		cell: ({ row }) => {
-			const user = row.original;
-			return <>{user.transfer.totalCount}</>;
-		},
+		accessorKey: "totalTransfers",
 		header: "Total transfers",
 	},
 	{
