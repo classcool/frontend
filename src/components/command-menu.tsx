@@ -37,19 +37,19 @@ const commands = [
 				icon: House,
 			},
 			{
-				title: "Dashboard",
-				url: "/dashboard",
-				icon: LayoutDashboard,
-			},
-			{
 				title: "Async Orders",
 				url: "/dashboard/orders",
 				icon: ClockArrowUp,
 			},
 			{
-				title: "Users",
-				url: "/dashboard/users",
-				icon: UsersRound,
+				title: "Currencies",
+				url: "/dashboard/currencies",
+				icon: ChartCandlestick,
+			},
+			{
+				title: "Dashboard",
+				url: "/dashboard",
+				icon: LayoutDashboard,
 			},
 			{
 				title: "Hooks",
@@ -62,9 +62,9 @@ const commands = [
 				icon: Waves,
 			},
 			{
-				title: "Currencies",
-				url: "/dashboard/currencies",
-				icon: ChartCandlestick,
+				title: "Users",
+				url: "/dashboard/users",
+				icon: UsersRound,
 			},
 		],
 	},
@@ -118,31 +118,9 @@ const commands = [
 			},
 		],
 	},
-	{
-		heading: "Settings",
-		icon: Settings2,
-		items: [
-			{
-				title: "General",
-				url: "#",
-			},
-			{
-				title: "Team",
-				url: "#",
-			},
-			{
-				title: "Billing",
-				url: "#",
-			},
-			{
-				title: "Limits",
-				url: "#",
-			},
-		],
-	},
 ];
 
-export function CommandDialogDemo() {
+export function CommandDialogDemo(props: {title: string}) {
 	const [open, setOpen] = React.useState(false);
 	const router = useRouter();
 
@@ -166,7 +144,7 @@ export function CommandDialogDemo() {
 		<>
 			<Button onClick={() => setOpen(true)} variant="ghost" size="default">
 				<p className="text-sm text-muted-foreground">
-					Press{" "}
+					{props.title}{" "}
 					<kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
 						<span className="text-xs">⌘</span>K
 					</kbd>
