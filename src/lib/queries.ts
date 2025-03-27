@@ -92,6 +92,7 @@ export function usersQuery(cursor: string, direction: PageDirection) {
   users ${opts} {
     items {
       timestamp
+			totalInitialized
       chainId
       sender
       liquidity {
