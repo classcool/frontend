@@ -1,6 +1,5 @@
 "use client";
 
-import { data } from "@/components/app-sidebar";
 import {
 	CommandDialog,
 	CommandEmpty,
@@ -9,18 +8,18 @@ import {
 	CommandItem,
 	CommandList,
 	CommandSeparator,
-	CommandShortcut,
 } from "@/components/ui/command";
 import {
 	BookOpen,
 	ChartCandlestick,
 	Circle,
-	CreditCard,
+	ClockArrowUp,
+	House,
 	KeySquare,
 	LayoutDashboard,
-	Settings,
 	Settings2,
 	Unplug,
+	UsersRound,
 	Waves,
 	WavesLadder,
 } from "lucide-react";
@@ -33,9 +32,24 @@ const commands = [
 		heading: "Suggestions",
 		items: [
 			{
+				title: "Home",
+				url: "/",
+				icon: House,
+			},
+			{
 				title: "Dashboard",
 				url: "/dashboard",
 				icon: LayoutDashboard,
+			},
+			{
+				title: "Async Orders",
+				url: "/dashboard/orders",
+				icon: ClockArrowUp,
+			},
+			{
+				title: "Users",
+				url: "/dashboard/users",
+				icon: UsersRound,
 			},
 			{
 				title: "Hooks",
