@@ -1,12 +1,10 @@
 "use client";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuGroup,
 	DropdownMenuItem,
-	DropdownMenuLabel,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
@@ -16,8 +14,13 @@ import {
 	SidebarMenuItem,
 	useSidebar,
 } from "@/components/ui/sidebar";
-import { BadgeCheck, ChevronsUpDown, LogOut, Sparkles } from "lucide-react";
+import { ChevronsUpDown, LogOut, Sparkles } from "lucide-react";
+import { motion } from "motion/react";
 import { useAccount, useConnect, useDisconnect } from "wagmi";
+
+const chainNames = {
+	31337: "Anvil",
+};
 
 export function NavUser({
 	user,
@@ -29,7 +32,7 @@ export function NavUser({
 	};
 }) {
 	const { isMobile } = useSidebar();
-	const { connectors, connect, status, error } = useConnect();
+	const { connectors, connect, status, error, isPending } = useConnect();
 	const { disconnect } = useDisconnect();
 	const account = useAccount();
 
@@ -42,13 +45,40 @@ export function NavUser({
 							size="lg"
 							className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
 						>
-							<Avatar className="h-8 w-8 rounded-lg">
-								<AvatarImage src={user.avatar} alt={user.name} />
-								<AvatarFallback className="rounded-lg">CN</AvatarFallback>
-							</Avatar>
 							<div className="grid flex-1 text-left text-sm leading-tight">
 								<span className="truncate font-semibold">
-									Chain {account.chainId}
+									{account.chainId && account.chainId === 31337 ? (
+										"Anvil Localhost"
+									) : (
+										<>
+											{account.chainId && account.chain ? (
+												account.chain.name
+											) : (
+												<>
+													{isPending ? (
+														"Connnect Me"
+													) : (
+														<motion.div
+															animate={{
+																x: [0, 5, 0, 5, 0, 0],
+																y: [0, -2, 2, -2, 2, 0],
+																scale: 1,
+															}}
+															transition={{
+																times: [0, 0.3, 0.6],
+																repeat: Number.POSITIVE_INFINITY,
+																repeatDelay: 2,
+																duration: 0.5,
+																ease: "easeInOut",
+															}}
+														>
+															Connect Me
+														</motion.div>
+													)}
+												</>
+											)}
+										</>
+									)}
 								</span>
 								<span className="truncate text-xs">{account.status}</span>
 							</div>
@@ -84,7 +114,6 @@ export function NavUser({
 						{connectors.map((connector) => (
 							<DropdownMenuGroup key={connector.uid}>
 								<DropdownMenuItem onClick={() => connect({ connector })}>
-									<BadgeCheck />
 									{connector.name}
 								</DropdownMenuItem>
 							</DropdownMenuGroup>
