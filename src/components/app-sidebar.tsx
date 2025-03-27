@@ -11,8 +11,8 @@ import {
 	SidebarMenu,
 	SidebarMenuButton,
 	SidebarMenuItem,
+	useSidebar,
 } from "@/components/ui/sidebar";
-import { useSidebar } from "@/components/ui/sidebar";
 import {
 	BookOpen,
 	ChartCandlestick,
@@ -29,7 +29,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import type React from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export const data = {
 	user: {
@@ -107,29 +107,6 @@ export const data = {
 				},
 			],
 		},
-		{
-			title: "Settings",
-			url: "#",
-			icon: Settings2,
-			items: [
-				{
-					title: "General",
-					url: "#",
-				},
-				{
-					title: "Team",
-					url: "#",
-				},
-				{
-					title: "Billing",
-					url: "#",
-				},
-				{
-					title: "Limits",
-					url: "#",
-				},
-			],
-		},
 	],
 	navSecondary: [
 		{
@@ -147,7 +124,6 @@ export const data = {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 	const { toggleSidebar } = useSidebar();
-
 	useEffect(() => {
 		const down = (e: KeyboardEvent) => {
 			if (e.key === "j" && (e.metaKey || e.ctrlKey)) {
@@ -155,7 +131,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 				toggleSidebar();
 			}
 		};
-
 		document.addEventListener("keydown", down);
 		return () => document.removeEventListener("keydown", down);
 	}, [toggleSidebar]);
