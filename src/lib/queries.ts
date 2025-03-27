@@ -59,7 +59,7 @@ export function ordersQuery(cursor: string, direction: PageDirection) {
 	if (cursor) {
 		c = `${direction === "next" ? "after" : "before"}: $cursor`;
 	}
-	const opts = `(${c}, where: { chainId: ${id}})`;
+	const opts = `(${c}, where: { chainId: ${id}}, orderBy: "timestamp", orderDirection: "desc")`;
 	return `query MyQuery ($cursor: String, $chainId: Int){
   orders ${opts} {
     items {
@@ -69,6 +69,7 @@ export function ordersQuery(cursor: string, direction: PageDirection) {
       poolId
       zeroForOne
       nonce
+      timestamp
     }
     pageInfo {
       endCursor
@@ -86,10 +87,11 @@ export function usersQuery(cursor: string, direction: PageDirection) {
 	if (cursor) {
 		c = `${direction === "next" ? "after" : "before"}: $cursor`;
 	}
-	const opts = `(${c}, where: { chainId: ${id}})`;
+	const opts = `(${c}, where: { chainId: ${id}}, orderBy: "timestamp", orderDirection: "desc")`;
 	return `query MyQuery($cursor: String, $chainId: Int) {
   users ${opts} {
     items {
+      timestamp
       chainId
       sender
       liquidity {
@@ -118,11 +120,12 @@ export function hooksQuery(cursor: string, direction: PageDirection) {
 	if (cursor) {
 		c = `${direction === "next" ? "after" : "before"}: $cursor`;
 	}
-	const opts = `(${c}, where: { chainId: ${id}})`;
+	const opts = `(${c}, where: { chainId: ${id}}, orderBy: "timestamp", orderDirection: "desc")`;
 	return `
 	query MyQuery($cursor: String, $chainId: Int) {
 		hooks ${opts} {
 			items {
+				timestamp
 				chainId
 				hookAddress
 				pools {
@@ -173,11 +176,12 @@ export function poolsQuery(cursor: string, direction: PageDirection) {
 	if (cursor) {
 		c = `${direction === "next" ? "after" : "before"}: $cursor`;
 	}
-	const opts = `(${c}, where: { chainId: ${id}})`;
+	const opts = `(${c}, where: { chainId: ${id}}, orderBy: "timestamp", orderDirection: "desc")`;
 	return `
 	query MyQuery($cursor: String, $chainId: Int) {
     pools ${opts} {
       items {
+				timestamp
         chainId
         currency1
         currency0
@@ -215,11 +219,12 @@ export function liquiditysQuery(cursor: string, direction: PageDirection) {
 	if (cursor) {
 		c = `${direction === "next" ? "after" : "before"}: $cursor`;
 	}
-	const opts = `(${c}, where: { chainId: ${id}})`;
+	const opts = `(${c}, where: { chainId: ${id}}, orderBy: "timestamp", orderDirection: "desc")`;
 	return `
 	query MyQuery($cursor: String, $chainId: Int) {
 		liquiditys ${opts} {
 			items {
+				timestamp
 				chainId
 				id
 				liquidityDelta
@@ -246,11 +251,12 @@ export function operatorsQuery(cursor: string, direction: PageDirection) {
 	if (cursor) {
 		c = `${direction === "next" ? "after" : "before"}: $cursor`;
 	}
-	const opts = `(${c}, where: { chainId: ${id}})`;
+	const opts = `(${c}, where: { chainId: ${id}}, orderBy: "timestamp", orderDirection: "desc")`;
 	return `
 	query MyQuery($cursor: String, $chainId: Int) {
 		operators ${opts} {
 			items {
+				timestamp
 				approved
 				chainId
 				operator
