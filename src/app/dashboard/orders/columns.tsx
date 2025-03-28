@@ -1,5 +1,11 @@
 "use client";
 
+import {
+	Accordion,
+	AccordionContent,
+	AccordionItem,
+	AccordionTrigger,
+} from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -205,7 +211,7 @@ function TableCellViewer({ order }: { order: AsyncOrderEventType }) {
 			</SheetTrigger>
 			<SheetContent side="right" className="flex flex-col">
 				<SheetHeader className="gap-1">
-					<SheetTitle>Async Order</SheetTitle>
+					<SheetTitle>Async Swap</SheetTitle>
 					<SheetDescription>ChainId {order.chainId}</SheetDescription>
 				</SheetHeader>
 				<form onSubmit={executeOrder} className="flex flex-col gap-4 p-4">
@@ -272,12 +278,24 @@ function TableCellViewer({ order }: { order: AsyncOrderEventType }) {
 					</div>
 					<div className="flex flex-col gap-3">
 						<Label htmlFor="executor">Executor</Label>
-						<Select id="executor" name="executor" defaultValue={order.owner}>
-							<SelectTrigger className="w-full">
+						<Select
+							id="executor"
+							name="executor"
+							disabled
+							defaultValue={account.address}
+						>
+							<SelectTrigger
+								defaultValue={account.address}
+								value={account.address}
+								className="w-full"
+							>
 								<SelectValue />
 							</SelectTrigger>
 							<SelectContent>
-								<SelectItem value={account.address}>
+								<SelectItem
+									defaultValue={String(account.address)}
+									value={account.address}
+								>
 									{account.address}
 								</SelectItem>
 							</SelectContent>
@@ -287,6 +305,9 @@ function TableCellViewer({ order }: { order: AsyncOrderEventType }) {
 						Submit
 					</Button>
 				</form>
+				<div className="p-4">
+					<AsyncOrderAccordion />
+				</div>
 				<SheetFooter className="mt-auto flex gap-2 sm:flex-col sm:space-x-0">
 					<SheetClose asChild>
 						<Button variant="outline" className="w-full">
@@ -298,3 +319,33 @@ function TableCellViewer({ order }: { order: AsyncOrderEventType }) {
 		</Sheet>
 	);
 }
+
+export function AsyncOrderAccordion() {
+	return (
+		<Accordion type="single" collapsible className="w-full">
+			<AccordionItem value="item-1">
+				<AccordionTrigger>What is aync swap(s)?</AccordionTrigger>
+				<AccordionContent>
+					Any swap order(s) that will execute some time in the future.
+				</AccordionContent>
+			</AccordionItem>
+			<AccordionItem value="item-2">
+				<AccordionTrigger>
+					Is the hook contract filling the orders?
+				</AccordionTrigger>
+				<AccordionContent>
+					Yes, but only an executor role can submit the orders to be filled.
+				</AccordionContent>
+			</AccordionItem>
+			<AccordionItem value="item-3">
+				<AccordionTrigger>
+					Is it possible to create luquidity position with pending swaps?
+				</AccordionTrigger>
+				<AccordionContent>
+					Yes. We plan on supporting async swap for liquidity positions.
+				</AccordionContent>
+			</AccordionItem>
+		</Accordion>
+	);
+}
+Copy;
