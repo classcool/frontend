@@ -4,9 +4,9 @@ import { CommandDialogDemo } from "@/components/command-menu";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
 const statements = [
-	"Are you a victim of sandwich attacks?",
-	"Did you know async swaps makes reduce MEV?",
-	"Smart contracts go brrr...",
+	"Are you a Hook builder on Uniswap V4?",
+	"Want us help you manage async swaps?",
+	"Async swaps go brrr...",
 	"Press ENTER!",
 ];
 function App() {
