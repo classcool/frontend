@@ -6,7 +6,7 @@ import { columns } from "./columns";
 export default function Orders() {
 	return (
 		<div className="grid gap-4">
-			<h2>Async Orders</h2>
+			<h2>Async Swaps</h2>
 			<DataTable
 				columns={columns}
 				queryTemplate={ordersQuery}
