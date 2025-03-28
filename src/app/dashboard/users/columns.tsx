@@ -114,6 +114,6 @@ export const columns: ColumnDef<User>[] = [
 	},
 	{
 		accessorKey: "totalInitialized",
-		header: "Total Initialized",
+		header: "Pools Initialized",
 	},
 ];
