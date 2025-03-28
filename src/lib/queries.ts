@@ -72,7 +72,14 @@ export function poolIdQuery(chainId: number, poolId: string) {
 	return `query MyQuery {
   pool(${opts}) {
     chainId
+    currency0
+    currency1
+    fee
+    tickSpacing
     hooks
+    tick
+    sqrtPriceX96
+    timestamp
     poolId
     token0 {
       address
@@ -86,10 +93,6 @@ export function poolIdQuery(chainId: number, poolId: string) {
       symbol
       decimals
     }
-    tick
-    sqrtPriceX96
-    fee
-    timestamp
   }
 }`;
 }
@@ -108,8 +111,8 @@ export function ordersQuery(cursor: string, direction: PageDirection) {
       chainId
       owner
       poolId
+			orderStatus
       zeroForOne
-      nonce
       timestamp
     }
     pageInfo {
