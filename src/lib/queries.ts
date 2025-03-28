@@ -1,4 +1,17 @@
 export type PageDirection = "next" | "prev" | "";
+export const fetchDataSingle = async (query: string) => {
+	const res = await fetch("/api", {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify({ query }),
+	});
+
+	const json = await res.json();
+
+	return json.data;
+};
 export const fetchData = async (
 	cursor: string,
 	direction: PageDirection,
@@ -53,6 +66,34 @@ export function totalHooksQuery() {
   }
 }`;
 }
+
+export function poolIdQuery(chainId: number, poolId: string) {
+	const opts = `chainId: ${chainId}, poolId: "${poolId}"`;
+	return `query MyQuery {
+  pool(${opts}) {
+    chainId
+    hooks
+    poolId
+    token0 {
+      address
+      decimals
+      name
+      symbol
+    }
+    token1 {
+      address
+      name
+      symbol
+      decimals
+    }
+    tick
+    sqrtPriceX96
+    fee
+    timestamp
+  }
+}`;
+}
+
 export function ordersQuery(cursor: string, direction: PageDirection) {
 	let c = "after: $cursor";
 	const id = "$chainId";
