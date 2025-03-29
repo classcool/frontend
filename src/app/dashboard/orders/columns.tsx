@@ -6,6 +6,7 @@ import {
 	AccordionItem,
 	AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -34,10 +35,12 @@ import {
 	SheetTitle,
 	SheetTrigger,
 } from "@/components/ui/sheet";
-import { csmmAbi } from "@/lib/abis/generated";
+// import { csmmAbi } from "@/lib/abis/generated";
 import { testnets } from "@/lib/constants";
-import { fetchDataSingle, poolIdQuery } from "@/lib/queries";
+import { fetchData, fetchDataSingle, poolIdQuery } from "@/lib/queries";
 import { timeAgo } from "@/lib/timestamp";
+import { etherscanLinks, shortenHex } from "@/lib/utils";
+import { useQuery } from "@tanstack/react-query";
 import type { ColumnDef } from "@tanstack/react-table";
 import {
 	ArrowUpDown,
@@ -45,9 +48,51 @@ import {
 	Copy,
 	LoaderIcon,
 	MoreHorizontal,
+	Terminal,
 } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
 import type { Hex } from "viem";
-import { useAccount, useWriteContract } from "wagmi";
+import {
+	type BaseError,
+	useAccount,
+	useWaitForTransactionReceipt,
+	useWriteContract,
+} from "wagmi";
+
+const csmmAbi = [
+	{
+		type: "function",
+		inputs: [
+			{
+				name: "key",
+				internalType: "struct PoolKey",
+				type: "tuple",
+				components: [
+					{ name: "currency0", internalType: "Currency", type: "address" },
+					{ name: "currency1", internalType: "Currency", type: "address" },
+					{ name: "fee", internalType: "uint24", type: "uint24" },
+					{ name: "tickSpacing", internalType: "int24", type: "int24" },
+					{ name: "hooks", internalType: "contract IHooks", type: "address" },
+				],
+			},
+			{
+				name: "order",
+				internalType: "struct CSMM.AsyncOrder",
+				type: "tuple",
+				components: [
+					{ name: "poolId", internalType: "PoolId", type: "bytes32" },
+					{ name: "owner", internalType: "address", type: "address" },
+					{ name: "zeroForOne", internalType: "bool", type: "bool" },
+					{ name: "amountIn", internalType: "int256", type: "int256" },
+				],
+			},
+		],
+		name: "executeOrder",
+		outputs: [],
+		stateMutability: "nonpayable",
+	},
+] as const;
 
 export type AsyncOrderEventType = {
 	chainId: number;
@@ -151,9 +196,30 @@ export const columns: ColumnDef<AsyncOrderEventType>[] = [
 	},
 ];
 
+type PoolKey = {
+	currency0: Hex;
+	currency1: Hex;
+	fee: number;
+	tickSpacing: number;
+	hooks: string;
+};
+
 function TableCellViewer({ order }: { order: AsyncOrderEventType }) {
 	const account = useAccount();
-	const { data: hash, isPending, writeContract } = useWriteContract();
+	const { data: hash, error, isPending, writeContract } = useWriteContract();
+	const [key, setKey] = useState<PoolKey>();
+	const { isLoading: isConfirming, isSuccess: isConfirmed } =
+		useWaitForTransactionReceipt({
+			hash,
+		});
+	const query = poolIdQuery(order.chainId, order.poolId);
+	const poolData = useQuery({
+		queryKey: ["pool", account.chainId],
+		queryFn: () => fetchDataSingle(query),
+	});
+
+	// console.log("🐌 Async Pool Data", poolData.data);
+
 	async function executeOrder(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault();
 		const form = e.target;
@@ -163,32 +229,37 @@ function TableCellViewer({ order }: { order: AsyncOrderEventType }) {
 		formData.forEach((value, key) => {
 			orderData[key] = value;
 		});
-		console.log(orderData);
-		const query = poolIdQuery(order.chainId, order.poolId);
-		const poolData = await fetchDataSingle(query);
-		console.log(poolData);
 		const poolKey = {
-			currency0: poolData.currency0 as Hex,
-			currency1: poolData.currency1 as Hex,
-			fee: poolData.fee,
-			tickSpacing: poolData.tickSpacing,
-			hooks: poolData.hooks as Hex,
+			currency0: poolData?.data.pool.currency0 as Hex,
+			currency1: poolData?.data.pool.currency1 as Hex,
+			fee: poolData?.data.pool.fee as number,
+			tickSpacing: poolData?.data.pool.tickSpacing as number,
+			hooks: poolData?.data.pool.hooks as Hex,
 		} as const; // converts to a struct
 
+		// console.log("key", poolKey);
+		// console.log("form", orderData);
 		const asyncOrder = {
 			poolId: orderData.poolId as Hex,
 			owner: orderData.user as Hex,
 			zeroForOne: orderData.zeroForOne == "true" ? true : false,
-			amountIn: orderData.amountOut as bigint,
+			amountIn: orderData.amountIn as bigint,
 		} as const;
-
 		writeContract({
 			abi: csmmAbi,
-			address: poolData.hooks as Hex,
+			address: poolKey.hooks as Hex,
 			functionName: "executeOrder",
 			args: [poolKey, asyncOrder],
 		});
 	}
+	const handleCopy = async () => {
+		try {
+			// Copy the text to the clipboard
+			await navigator.clipboard.writeText(hash! as string);
+		} catch (err) {
+			toast("Failed to copy text.");
+		}
+	};
 	return (
 		<Sheet>
 			<SheetTrigger asChild>
@@ -267,10 +338,10 @@ function TableCellViewer({ order }: { order: AsyncOrderEventType }) {
 					</div>
 					<div className="grid grid-cols-2 gap-4">
 						<div className="flex flex-col gap-3">
-							<Label htmlFor="amountOut">AmountOut</Label>
+							<Label htmlFor="amountIn">AmountOut</Label>
 							<Input
-								id="amountOut"
-								name="amountOut"
+								id="amountIn"
+								name="amountIn"
 								type="number"
 								defaultValue={Number(order.amountIn)}
 							/>
@@ -301,11 +372,68 @@ function TableCellViewer({ order }: { order: AsyncOrderEventType }) {
 							</SelectContent>
 						</Select>
 					</div>
-					<Button type="submit" className="w-full">
-						Submit
-					</Button>
+					{isPending ? (
+						<Button disabled type="submit" className="w-full">
+							Submit
+						</Button>
+					) : (
+						<Button type="submit" className="w-full">
+							Submit
+						</Button>
+					)}
 				</form>
 				<div className="p-4">
+					<Alert variant={error ? "destructive" : "default"}>
+						<Terminal className="h-4 w-4" />
+						<AlertTitle>
+							{error ? "Transaction Error!" : "Transaction Status!"}
+						</AlertTitle>
+						<AlertDescription>
+							{hash && (
+								<>
+									<span>Transation Hash</span>
+									<div className="flex">
+										<Button
+											onClick={() => {
+												window.open(
+													`${account.chainId && etherscanLinks[account.chainId]}/tx/{hash}`,
+													"_blank",
+												);
+												console.log(account.chain);
+											}}
+											className="cursor-pointer"
+											variant="link"
+										>
+											{shortenHex(hash)}
+										</Button>
+										<Button
+											variant="ghost"
+											onClick={() => {
+												toast("Copied txn hash to clipboard");
+												handleCopy();
+											}}
+										>
+											<Copy />
+										</Button>
+									</div>
+								</>
+							)}
+							{isConfirming && <span>Waiting for confirmation...</span>}
+							{isConfirmed && (
+								<span>
+									<CheckCircle2Icon className="text-green-500 dark:text-green-400" />
+									Transaction confirmed.
+								</span>
+							)}
+							{error && (
+								<div>
+									Error: {(error as BaseError).shortMessage || error.message}
+								</div>
+							)}
+						</AlertDescription>
+					</Alert>
+				</div>
+				<div className="px-4">
 					<AsyncOrderAccordion />
 				</div>
 				<SheetFooter className="mt-auto flex gap-2 sm:flex-col sm:space-x-0">
@@ -342,7 +470,7 @@ export function AsyncOrderAccordion() {
 					Is it possible to create luquidity position with pending swaps?
 				</AccordionTrigger>
 				<AccordionContent>
-					Yes. We plan on supporting async swap for liquidity positions.
+					Yes. We plan on supporting async swap as liquidity positions.
 				</AccordionContent>
 			</AccordionItem>
 		</Accordion>
