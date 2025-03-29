@@ -37,7 +37,7 @@ import {
 } from "@/components/ui/sheet";
 // import { csmmAbi } from "@/lib/abis/generated";
 import { testnets } from "@/lib/constants";
-import { fetchData, fetchDataSingle, poolIdQuery } from "@/lib/queries";
+import { fetchDataSingle, poolIdQuery } from "@/lib/queries";
 import { timeAgo } from "@/lib/timestamp";
 import { etherscanLinks, shortenHex } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
@@ -50,7 +50,6 @@ import {
 	MoreHorizontal,
 	Terminal,
 } from "lucide-react";
-import { useState } from "react";
 import { toast } from "sonner";
 import type { Hex } from "viem";
 import {
@@ -196,18 +195,9 @@ export const columns: ColumnDef<AsyncOrderEventType>[] = [
 	},
 ];
 
-type PoolKey = {
-	currency0: Hex;
-	currency1: Hex;
-	fee: number;
-	tickSpacing: number;
-	hooks: string;
-};
-
 function TableCellViewer({ order }: { order: AsyncOrderEventType }) {
 	const account = useAccount();
 	const { data: hash, error, isPending, writeContract } = useWriteContract();
-	const [key, setKey] = useState<PoolKey>();
 	const { isLoading: isConfirming, isSuccess: isConfirmed } =
 		useWaitForTransactionReceipt({
 			hash,
@@ -238,7 +228,7 @@ function TableCellViewer({ order }: { order: AsyncOrderEventType }) {
 		} as const; // converts to a struct
 
 		// console.log("key", poolKey);
-		// console.log("form", orderData);
+		console.log("form", orderData);
 		const asyncOrder = {
 			poolId: orderData.poolId as Hex,
 			owner: orderData.user as Hex,
@@ -308,7 +298,6 @@ function TableCellViewer({ order }: { order: AsyncOrderEventType }) {
 						<div className="flex flex-col gap-3">
 							<Label htmlFor="zeroForOne">zeroForOne</Label>
 							<Select
-								id="zeroForOne"
 								name="zeroForOne"
 								defaultValue={order.zeroForOne === true ? "true" : "false"}
 							>
@@ -323,7 +312,7 @@ function TableCellViewer({ order }: { order: AsyncOrderEventType }) {
 						</div>
 						<div className="flex flex-col gap-3">
 							<Label htmlFor="status">Status</Label>
-							<Select id="status" name="status">
+							<Select name="status">
 								<SelectTrigger className="w-full">
 									<SelectValue />
 								</SelectTrigger>
@@ -349,12 +338,7 @@ function TableCellViewer({ order }: { order: AsyncOrderEventType }) {
 					</div>
 					<div className="flex flex-col gap-3">
 						<Label htmlFor="executor">Executor</Label>
-						<Select
-							id="executor"
-							name="executor"
-							disabled
-							defaultValue={account.address}
-						>
+						<Select name="executor" disabled defaultValue={account.address}>
 							<SelectTrigger
 								defaultValue={account.address}
 								value={account.address}
@@ -365,7 +349,7 @@ function TableCellViewer({ order }: { order: AsyncOrderEventType }) {
 							<SelectContent>
 								<SelectItem
 									defaultValue={String(account.address)}
-									value={account.address}
+									value={account.address ? account.address : ""}
 								>
 									{account.address}
 								</SelectItem>
