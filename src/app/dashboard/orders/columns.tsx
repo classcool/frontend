@@ -209,7 +209,6 @@ function TableCellViewer({ order }: { order: AsyncOrderEventType }) {
 	});
 
 	// console.log("🐌 Async Pool Data", poolData.data);
-
 	async function executeOrder(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault();
 		const form = e.target;
@@ -235,6 +234,7 @@ function TableCellViewer({ order }: { order: AsyncOrderEventType }) {
 			zeroForOne: orderData.zeroForOne == "true" ? true : false,
 			amountIn: orderData.amountIn as bigint,
 		} as const;
+
 		writeContract({
 			abi: csmmAbi,
 			address: poolKey.hooks as Hex,
@@ -349,7 +349,7 @@ function TableCellViewer({ order }: { order: AsyncOrderEventType }) {
 							<SelectContent>
 								<SelectItem
 									defaultValue={String(account.address)}
-									value={account.address ? account.address : ""}
+									value={account.address ? account.address : "executor"}
 								>
 									{account.address}
 								</SelectItem>
