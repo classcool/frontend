@@ -111,7 +111,7 @@ export const data = {
 	navSecondary: [
 		{
 			title: "Support",
-			url: "http://x.com/share?text=Yo, i wanna share some feedback! @msakiart ",
+			url: "http://x.com/share?text=amazing project build by @msakiart for @AtriumAcademy Uniswap Hook Incubator @UniswapFND",
 			icon: LifeBuoy,
 		},
 		{
