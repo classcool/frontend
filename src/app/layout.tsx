@@ -11,9 +11,9 @@ import { Providers } from "./providers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-	title: "MEV-Resilient AMM Design",
+	title: "Async-Swap AMM Design",
 	description:
-		" Uniswap V4’s hook implementin of a new MEV-resilient mechanism, somewhat inspired by recent theoretical work.",
+		" Uniswap V4’s hook implementin of a new Async Swap mechanism, somewhat a work in progress.",
 };
 
 export default async function RootLayout(props: { children: ReactNode }) {
