@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { testnets } from "@/lib/constants";
 import { timeAgo } from "@/lib/timestamp";
+import { etherscanLinks } from "@/lib/utils";
 import type { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, Code, Copy, MoreHorizontal } from "lucide-react";
 
@@ -19,15 +20,6 @@ export type HookType = {
 	hookAddress: string;
 	pools: { totalCount: string };
 	timestamp: number;
-};
-
-interface ExplorerLinks {
-	[chainId: number]: string;
-}
-
-const etherscanLinks: ExplorerLinks = {
-	130: "https://uniscan.xyz/address/",
-	1301: "https://sepolia.uniscan.xyz/address/",
 };
 
 export const columns: ColumnDef<HookType>[] = [
@@ -64,7 +56,7 @@ export const columns: ColumnDef<HookType>[] = [
 							<DropdownMenuItem
 								onClick={() =>
 									window.open(
-										`${etherscanLinks[pool.chainId]}${pool.hookAddress}#code`,
+										`${etherscanLinks[pool.chainId]}/address/${pool.hookAddress}#code`,
 									)
 								}
 							>
