@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
 const statements = [
 	"Are you a Hook builder on Uniswap V4?",
-	"Want us help you manage async swaps?",
+	"Want us help you manage your async swaps?",
 	"Async swaps go brrr...",
 	"Press ENTER!",
 ];
