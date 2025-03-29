@@ -270,7 +270,7 @@ function TableCellViewer({ order }: { order: AsyncOrderEventType }) {
 					)}
 				</Badge>
 			</SheetTrigger>
-			<SheetContent side="right" className="flex flex-col">
+			<SheetContent side="right" className="flex flex-col overflow-y-auto">
 				<SheetHeader className="gap-1">
 					<SheetTitle>Async Swap</SheetTitle>
 					<SheetDescription>ChainId {order.chainId}</SheetDescription>
