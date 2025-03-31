@@ -90,7 +90,7 @@ export const columns: ColumnDef<HookType>[] = [
 					{hook.chainId in testnets ? (
 						<>
 							{hook.chainId}
-							<Badge variant="destructive" className="ml-4">
+							<Badge variant="secondary" className="ml-4">
 								testnet
 							</Badge>
 						</>

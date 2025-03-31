@@ -155,7 +155,7 @@ export const columns: ColumnDef<AsyncOrderEventType>[] = [
 					{order.chainId in testnets ? (
 						<>
 							{order.chainId}
-							<Badge variant="destructive" className="ml-4">
+							<Badge variant="secondary" className="ml-4">
 								testnet
 							</Badge>
 						</>

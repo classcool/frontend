@@ -83,7 +83,7 @@ export const columns: ColumnDef<CurrencyType>[] = [
 					{pool.chainId in testnets ? (
 						<>
 							{pool.chainId}
-							<Badge variant="destructive" className="ml-4">
+							<Badge variant="secondary" className="ml-4">
 								testnet
 							</Badge>
 						</>

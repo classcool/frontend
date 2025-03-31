@@ -74,7 +74,7 @@ export const columns: ColumnDef<User>[] = [
 					{user.chainId in testnets ? (
 						<>
 							{user.chainId}
-							<Badge variant="destructive" className="ml-4">
+							<Badge variant="secondary" className="ml-4">
 								testnet
 							</Badge>
 						</>

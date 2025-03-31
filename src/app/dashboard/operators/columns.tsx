@@ -75,7 +75,7 @@ export const columns: ColumnDef<HookType>[] = [
 					{operator.chainId in testnets ? (
 						<>
 							{operator.chainId}
-							<Badge variant="destructive" className="ml-4">
+							<Badge variant="outline" className="ml-4">
 								testnet
 							</Badge>
 						</>
