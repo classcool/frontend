@@ -274,13 +274,12 @@ export function liquiditysQuery(cursor: string, direction: PageDirection) {
 			items {
 				timestamp
 				chainId
-				id
-				liquidityDelta
-				poolId
-				salt
 				sender
-				tickLower
-				tickUpper
+				id
+				poolId
+				sender
+				amount0
+				amount1
 			}
 			pageInfo {
 				hasNextPage
