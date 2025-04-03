@@ -115,14 +115,14 @@ export const columns: ColumnDef<CurrencyType>[] = [
 		header: "TxHash",
 	},
 	{
-		accessorKey: "liquidityDelta",
+		accessorKey: "sender",
 		header: ({ column }) => {
 			return (
 				<Button
 					variant="ghost"
 					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
 				>
-					Liquidity Delta
+					Sender
 					<ArrowUpDown className="ml-2 h-4 w-4" />
 				</Button>
 			);
@@ -133,32 +133,28 @@ export const columns: ColumnDef<CurrencyType>[] = [
 		header: "Pool Id",
 	},
 	{
-		accessorKey: "sender",
-		header: "Sender",
-	},
-	{
-		accessorKey: "tickLower",
+		accessorKey: "amount0",
 		header: ({ column }) => {
 			return (
 				<Button
 					variant="ghost"
 					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
 				>
-					Tick Lower
+					Amount0
 					<ArrowUpDown className="ml-2 h-4 w-4" />
 				</Button>
 			);
 		},
 	},
 	{
-		accessorKey: "tickUpper",
+		accessorKey: "amount1",
 		header: ({ column }) => {
 			return (
 				<Button
 					variant="ghost"
 					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
 				>
-					Tick Upper
+					Amount1
 					<ArrowUpDown className="ml-2 h-4 w-4" />
 				</Button>
 			);
